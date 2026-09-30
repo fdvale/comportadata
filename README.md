@@ -12,7 +12,7 @@ O programa funciona localmente pelo terminal e salva registros em um arquivo CSV
 
 ## Funcionalidades da versão atual
 
-- Cadastrar registros ABC.
+- Cadastrar registros ABC com validação dos campos digitados.
 - Consultar os registros carregados do CSV e os novos cadastros.
 - Salvar os registros em `registros.csv`, preservando os dados carregados ao iniciar.
 - Exibir quantidade de registros, frequência total e duração média por registro.
@@ -70,7 +70,7 @@ Digite os comandos de execução no terminal, antes de abrir o programa. No menu
 | Frequência | 2 |
 | Duração | 1.5 |
 
-Use ponto para separar as casas decimais da duração. O arquivo `registros.csv` é criado na mesma pasta de `main.py` após o primeiro cadastro.
+No terminal, use ponto ou vírgula para separar as casas decimais da duração. No CSV, o programa salva a duração com ponto. O arquivo `registros.csv` é criado na mesma pasta de `main.py` após o primeiro cadastro.
 
 ## Leitura e preservação do CSV
 
@@ -98,14 +98,22 @@ Na pasta do projeto, execute:
 python -m unittest discover -s tests -v
 ```
 
-Os testes verificam a leitura, a preservação dos registros ao reabrir, a análise vazia, o primeiro cadastro e a proteção contra CSV inválido. Usam pastas temporárias e dados fictícios.
+Os testes verificam a leitura, a preservação dos registros ao reabrir, a análise vazia, o primeiro cadastro a proteção contra CSV inválido e a recuperação após entradas inválidas no terminal. Usam pastas temporárias e dados fictícios.
 
-## Limitações conhecidas
+## Validação do cadastro
 
-- Entradas não numéricas nos campos numéricos podem encerrar o programa.
-- Não há validação de datas, valores negativos ou campos de texto vazios.
+Quando uma entrada é inválida, o programa explica o problema e solicita novamente o mesmo campo.
 
-A validação dos dados digitados no terminal é uma melhoria pendente. Mantenha cópias de segurança do CSV.
+| Campo | Valores aceitos |
+|---|---|
+| Menu | Inteiro de 1 a 4 |
+| Data | Data existente no formato dd/mm/aaaa, incluindo validação de anos bissextos |
+| Antecedente, comportamento e consequência | Texto obrigatório |
+| Frequência | Inteiro maior ou igual a zero |
+| Duração | Número finito maior ou igual a zero, com ponto ou vírgula decimal |
+
+A validação de datas e textos se aplica ao cadastro pelo terminal. A leitura de CSV mantém as verificações de estrutura e números descritas acima.
+
 
 ## Estrutura do repositório
 
@@ -121,8 +129,6 @@ O CSV gerado durante o uso não é incluído no repositório. Os exemplos aprese
 
 ## Próximas melhorias
 
-- Tratar entradas inválidas no terminal.
-- Validar os campos de cadastro.
 - Ampliar as análises e a apresentação dos resultados.
 
 Esses itens são propostas para futuras versões, ainda não implementadas.
