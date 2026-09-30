@@ -90,6 +90,55 @@ class TestComportaData(unittest.TestCase):
         resultado = self.executar('3\n4\n')
         self.assertEqual(resultado.returncode, 0, resultado.stderr)
 
+    def test_menu_invalido_pede_novamente(self):
+        resultado = self.executar('abc\n\n0\n9\n1.5\n4\n')
+        self.assertEqual(resultado.returncode, 0, resultado.stderr)
+        self.assertIn('Encerrando o programa', resultado.stdout)
+        self.assertFalse(self.csv.exists())
+
+    def test_data_invalida_pede_novamente_e_aceita_ano_bissexto(self):
+        entrada = ('1\n\nabc\n31/02/2026\n29/02/2025\n2026-09-01\n'
+                   '1/9/2026\n29/02/2024\ntarefa\najuda\norientacao\n2\n1.5\n4\n')
+        resultado = self.executar(entrada)
+        self.assertEqual(resultado.returncode, 0, resultado.stderr)
+        with self.csv.open(encoding='utf-8', newline='') as arquivo:
+            registros = list(csv.DictReader(arquivo))
+        self.assertEqual(len(registros), 1)
+        self.assertEqual(registros[0]['data'], '29/02/2024')
+
+    def test_campos_de_texto_nao_aceitam_vazio(self):
+        entrada = '1\n30/09/2026\n\n   \nTarefa\n\nAjuda\n \nOrientação\n2\n1.5\n4\n'
+        resultado = self.executar(entrada)
+        self.assertEqual(resultado.returncode, 0, resultado.stderr)
+        with self.csv.open(encoding='utf-8', newline='') as arquivo:
+            registro = next(csv.DictReader(arquivo))
+        self.assertEqual(registro['antecedente'], 'tarefa')
+        self.assertEqual(registro['comportamento'], 'ajuda')
+        self.assertEqual(registro['consequencia'], 'orientação')
+
+    def test_frequencia_exige_inteiro_nao_negativo(self):
+        entrada = '1\n30/09/2026\ntarefa\najuda\norientacao\nabc\n\n-2\n2.5\n2\n1.5\n4\n'
+        resultado = self.executar(entrada)
+        self.assertEqual(resultado.returncode, 0, resultado.stderr)
+        with self.csv.open(encoding='utf-8', newline='') as arquivo:
+            self.assertEqual(next(csv.DictReader(arquivo))['frequencia'], '2')
+
+    def test_duracao_rejeita_invalida_e_aceita_virgula(self):
+        entrada = ('1\n30/09/2026\ntarefa\najuda\norientacao\n2\n'
+                   'abc\n\n-1\nnan\ninf\n1e999\n1,5\n4\n')
+        resultado = self.executar(entrada)
+        self.assertEqual(resultado.returncode, 0, resultado.stderr)
+        with self.csv.open(encoding='utf-8', newline='') as arquivo:
+            self.assertEqual(next(csv.DictReader(arquivo))['duracao'], '1.5')
+
+    def test_zero_e_aceito_e_pode_ser_reaberto(self):
+        resultado = self.executar('1\n30/09/2026\ntarefa\najuda\norientacao\n0\n0\n4\n')
+        self.assertEqual(resultado.returncode, 0, resultado.stderr)
+        resultado = self.executar('3\n4\n')
+        self.assertEqual(resultado.returncode, 0, resultado.stderr)
+        self.assertIn('Frequência total: 0', resultado.stdout)
+        self.assertIn('Duração média: 0.0', resultado.stdout)
+
 
 if __name__ == '__main__':
     unittest.main()
