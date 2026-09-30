@@ -1,28 +1,69 @@
 import csv
+import math
 import os
+import sys
 
 pasta_projeto = os.path.dirname(os.path.abspath(__file__))
 caminho_csv = os.path.join(pasta_projeto, "registros.csv")
 
-registros = []
 opcao = 0
+campos = [
+    "data",
+    "antecedente",
+    "comportamento",
+    "consequencia",
+    "frequencia",
+    "duracao"
+]
+
+
+def carregar_registros():
+    """Lê o CSV existente e converte frequência e duração para números."""
+    if not os.path.exists(caminho_csv):
+        return []
+
+    registros_carregados = []
+    with open(caminho_csv, "r", newline="", encoding="utf-8-sig") as arquivo:
+        leitor = csv.DictReader(arquivo, strict=True)
+        if leitor.fieldnames is None:
+            return []
+        if len(leitor.fieldnames) != len(campos) or set(leitor.fieldnames) != set(campos):
+            raise ValueError("O cabeçalho do CSV deve conter: " + ", ".join(campos))
+
+        for registro in leitor:
+            if None in registro or any(valor is None for valor in registro.values()):
+                raise ValueError(f"Quantidade de campos inválida na linha {leitor.line_num}.")
+            try:
+                registro["frequencia"] = int(registro["frequencia"])
+                registro["duracao"] = float(registro["duracao"])
+            except ValueError as erro:
+                raise ValueError(
+                    f"Frequência ou duração inválida na linha {leitor.line_num}."
+                ) from erro
+            if (
+                registro["frequencia"] < 0
+                or registro["duracao"] < 0
+                or not math.isfinite(registro["duracao"])
+            ):
+                raise ValueError(f"Valor numérico inválido na linha {leitor.line_num}.")
+            registros_carregados.append(registro)
+
+    return registros_carregados
 
 
 def salvar_registros(registros):
     with open(caminho_csv, "w", newline="", encoding="utf-8") as arquivo:
-        campos = [
-            "data",
-            "antecedente",
-            "comportamento",
-            "consequencia",
-            "frequencia",
-            "duracao"
-        ]
-
         escritor = csv.DictWriter(arquivo, fieldnames=campos)
 
         escritor.writeheader()
         escritor.writerows(registros)
+
+try:
+    registros = carregar_registros()
+except (OSError, ValueError, csv.Error) as erro:
+    print(f"Não foi possível carregar registros.csv: {erro}")
+    print("O programa foi encerrado sem alterar o CSV. Confira o arquivo antes de tentar novamente.")
+    sys.exit(1)
 
 while opcao != 4:
     print("\n=== COMPORTADATA ===")
@@ -82,9 +123,9 @@ while opcao != 4:
     elif opcao == 3:
         if len(registros) == 0:
             print("\nNão existem dados suficientes para análise.")
+            continue
 
-        else:
-            print("\n=== ANÁLISE DOS DADOS ===")
+        print("\n=== ANÁLISE DOS DADOS ===")
 
         quantidade = len(registros)
 
