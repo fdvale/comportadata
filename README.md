@@ -36,8 +36,8 @@ Não é necessário instalar pacotes adicionais.
 2. Baixe o repositório ou clone pelo terminal:
 
    ```bash
-   git clone https://github.com/fdvale/primeiro-projeto.git
-   cd primeiro-projeto
+   git clone https://github.com/fdvale/comportadata.git
+   cd comportadata
    ```
 
 3. Execute:
