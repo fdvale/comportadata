@@ -1,4 +1,5 @@
 import csv
+from datetime import datetime
 import math
 import os
 import sys
@@ -15,6 +16,57 @@ campos = [
     "frequencia",
     "duracao"
 ]
+
+
+def ler_texto(mensagem):
+    """Solicita um texto obrigatório e mantém a padronização em minúsculas."""
+    while True:
+        valor = input(mensagem).strip().lower()
+        if valor:
+            return valor
+        print("Este campo não pode ficar vazio. Digite uma descrição.")
+
+
+def ler_data():
+    """Solicita uma data existente no formato dd/mm/aaaa."""
+    while True:
+        valor = input("Digite a data do registro (dd/mm/aaaa): ").strip()
+        try:
+            data = datetime.strptime(valor, "%d/%m/%Y")
+            formato = f"{data.day:02d}/{data.month:02d}/{data.year:04d}"
+            if valor == formato:
+                return valor
+        except ValueError:
+            pass
+        print("Data inválida. Use dd/mm/aaaa, por exemplo: 30/09/2026.")
+
+
+def ler_inteiro(mensagem, minimo=0, maximo=None):
+    """Repete a pergunta até receber um inteiro dentro dos limites."""
+    while True:
+        try:
+            valor = int(input(mensagem).strip())
+            if valor >= minimo and (maximo is None or valor <= maximo):
+                return valor
+        except ValueError:
+            pass
+        if maximo is None:
+            print(f"Digite um número inteiro maior ou igual a {minimo}.")
+        else:
+            print(f"Digite um número inteiro entre {minimo} e {maximo}.")
+
+
+def ler_duracao():
+    """Aceita minutos não negativos com ponto ou vírgula decimal."""
+    while True:
+        try:
+            texto = input("Qual foi a duração em minutos? ").strip()
+            valor = float(texto.replace(",", "."))
+            if math.isfinite(valor) and valor >= 0:
+                return valor
+        except ValueError:
+            pass
+        print("Digite uma duração válida maior ou igual a zero, como 1,5 ou 1.5.")
 
 
 def carregar_registros():
@@ -72,16 +124,16 @@ while opcao != 4:
     print("3 - Analisar dados")
     print("4 - Sair")
 
-    opcao = int(input("Escolha uma opção: "))
+    opcao = ler_inteiro("Escolha uma opção: ", minimo=1, maximo=4)
 
     if opcao == 1:
-        data = input("Digite a data do registro (dd/mm/aaaa): ").strip()
-        antecedente = input("Digite o antecedente: ").strip().lower()
-        comportamento = input("Digite o comportamento: ").strip().lower()
-        consequencia = input("Digite a consequência: ").strip().lower()
+        data = ler_data()
+        antecedente = ler_texto("Digite o antecedente: ")
+        comportamento = ler_texto("Digite o comportamento: ")
+        consequencia = ler_texto("Digite a consequência: ")
 
-        frequencia = int(input("Quantas vezes ocorreu? "))
-        duracao = float(input("Qual foi a duração em minutos? "))
+        frequencia = ler_inteiro("Quantas vezes ocorreu? ")
+        duracao = ler_duracao()
 
         registro = {
             "data": data,
@@ -188,4 +240,3 @@ while opcao != 4:
 
     else:
         print("Opção inválida.")
-
