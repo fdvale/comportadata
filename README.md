@@ -1,10 +1,45 @@
 # ComportaData
 
-Protótipo acadêmico em Python para registrar e explorar dados comportamentais pelo modelo ABC: **Antecedente, Comportamento e Consequência**.
+Projeto acadêmico com uma demonstração web e uma versão de terminal em Python para registrar e explorar dados comportamentais pelo modelo ABC: **Antecedente, Comportamento e Consequência**.
 
 Desenvolvido por **Fernanda do Vale**, o projeto conecta conhecimentos de Psicologia à prática de programação e organização de dados.
 
-## Sobre o projeto
+## Demonstração web
+
+A pasta `web` contém uma aplicação em **HTML, CSS e JavaScript**, com:
+
+- Painel com quantidade de registros, frequência total e duração média.
+- Gráfico de frequência por data e contagem dos comportamentos mais registrados.
+- Consulta dos 20 exemplos fictícios.
+- Formulário de cadastro com validação e atualização imediata do painel.
+- Exportação dos registros da sessão para CSV.
+- Layout adaptável a computadores e celulares.
+
+A demonstração executa a análise no navegador, sem backend Python. Os novos registros ficam apenas na memória da página: ao recarregar, os 20 exemplos iniciais são restaurados. Use somente dados fictícios.
+
+### Executar a interface no computador
+
+Na pasta raiz do repositório, execute:
+
+```bash
+python -m http.server 8000 --directory web
+```
+
+Abra `http://localhost:8000` no navegador. O Python serve os arquivos localmente; os cálculos da interface são executados em JavaScript.
+
+### Testes da versão web
+
+Com Node.js instalado, execute na raiz do repositório:
+
+```bash
+node --test web/tests.mjs
+```
+
+Não há dependências adicionais. Os testes verificam os totais dos exemplos, análise vazia, validação, cadastro e exportação CSV.
+
+## Versão de terminal em Python
+
+### Sobre a versão de terminal
 
 O programa funciona localmente pelo terminal e salva registros em um arquivo CSV. Cada registro reúne data, antecedente, comportamento, consequência, frequência e duração em minutos.
 
@@ -98,7 +133,7 @@ Na pasta do projeto, execute:
 python -m unittest discover -s tests -v
 ```
 
-Os testes verificam a leitura, a preservação dos registros ao reabrir, a análise vazia, o primeiro cadastro a proteção contra CSV inválido e a recuperação após entradas inválidas no terminal. Usam pastas temporárias e dados fictícios.
+Os testes verificam a leitura, a preservação dos registros ao reabrir, a análise vazia, o primeiro cadastro, a proteção contra CSV inválido e a recuperação após entradas inválidas no terminal. Usam pastas temporárias e dados fictícios.
 
 ## Validação do cadastro
 
@@ -119,6 +154,7 @@ A validação de datas e textos se aplica ao cadastro pelo terminal. A leitura d
 
 | Arquivo | Finalidade |
 |---|---|
+| `web/` | Interface web, exemplos e testes JavaScript |
 | `main.py` | Programa com leitura, cadastro, consulta e análise |
 | `README.md` | Apresentação e instruções |
 | `.gitignore` | Exclui dados locais e arquivos temporários do Git |
