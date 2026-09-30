@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ComportaData — demonstração</title>
+  <meta name="description" content="Explore registros ABC, cadastre exemplos fictícios e acompanhe frequência e duração no ComportaData.">
+  <meta name="theme-color" content="#122c35">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%23122c35'/%3E%3Cpath d='M10 27V20M20 27V11M30 27V16' stroke='%23c3ec94' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip" href="#conteudo">Pular para o conteúdo</a>
+  <aside class="sidebar">
+    <a class="brand" href="#visao-geral" aria-label="ComportaData, visão geral"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>Comporta<span class="brand-light">Data</span><small>REGISTROS COMPORTAMENTAIS</small></span></a>
+    <div class="nav-label">ESPAÇO DE TRABALHO</div>
+    <nav aria-label="Navegação principal">
+      <a href="#visao-geral" class="nav-link active" data-view="visao-geral"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Visão geral</a>
+      <a href="#registros" class="nav-link" data-view="registros"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>Registros <span id="nav-count">20</span></a>
+    </nav>
+    <div class="sidebar-bottom"><span class="demo-symbol" aria-hidden="true">ABC</span><h2>Explore a demonstração</h2><p>Experimente o fluxo com situações inteiramente fictícias.</p><div class="author">Projeto de <strong>Fernanda do Vale</strong></div><a href="https://github.com/fdvale/comportadata" target="_blank" rel="noopener">Conheça o código no GitHub</a></div>
+  </aside>
+  <div class="workspace">
+    <header class="topbar"><span>ComportaData <span class="top-divider">/</span> <span id="breadcrumb">Visão geral</span></span><span class="demo-badge">Versão de demonstração</span></header>
+    <main id="conteudo">
+      <div class="page-heading"><div><p class="eyebrow">OBSERVAR · REGISTRAR · COMPREENDER</p><h1 id="page-title">Visão geral</h1><p id="page-description">Uma leitura dos seus registros comportamentais.</p></div><button class="primary" id="new-record"><span aria-hidden="true">+</span> Novo registro</button></div>
+      <div class="notice"><span class="notice-icon" aria-hidden="true">i</span><p><strong>Ambiente de demonstração.</strong> Use apenas dados fictícios. Os novos registros duram até a página ser recarregada.</p></div>
+      <section id="overview" aria-label="Análise dos registros">
+        <div class="stats">
+          <article class="stat"><div class="stat-label">Registros cadastrados <span aria-hidden="true">▤</span></div><div class="stat-number" id="stat-total">20</div><p>Observações no conjunto de dados</p></article>
+          <article class="stat"><div class="stat-label">Frequência total <span aria-hidden="true">∑</span></div><div class="stat-number" id="stat-frequency">40</div><p>Soma das ocorrências registradas</p></article>
+          <article class="stat stat-accent"><div class="stat-label">Duração média <span aria-hidden="true">◷</span></div><div class="stat-number"><span id="stat-duration">2,85</span> <small>min</small></div><p>Tempo médio por registro</p></article>
+        </div>
+        <div class="charts">
+          <section class="panel"><div class="panel-heading"><div><h2>Frequência ao longo do tempo</h2><p>Soma das ocorrências em cada data</p></div><span class="chart-unit">OCORRÊNCIAS</span></div><div id="timeline" class="timeline"></div></section>
+          <section class="panel"><div class="panel-heading"><div><h2>Comportamentos registrados</h2><p>Os cinco mais presentes nos registros</p></div></div><div id="behavior-chart" class="behavior-chart"></div><p class="chart-note">Contagem de registros, independente da frequência informada.</p></section>
+        </div>
+        <section class="abc-guide" aria-label="Modelo ABC"><div><span class="abc-letter">A</span><div><h3>Antecedente</h3><p>O que aconteceu antes?</p></div></div><div><span class="abc-letter">B</span><div><h3>Comportamento</h3><p>O que foi observado?</p></div></div><div><span class="abc-letter">C</span><div><h3>Consequência</h3><p>O que aconteceu depois?</p></div></div></section>
+      </section>
+      <section class="panel records-panel" aria-label="Lista de registros"><div class="panel-heading records-heading"><div><h2 id="records-title">Registros recentes</h2><p id="records-description">Últimas observações do conjunto fictício</p></div><div class="table-actions"><button class="secondary" id="export-csv">Baixar CSV</button><a class="text-link" id="all-records" href="#registros">Ver todos</a></div></div><div class="table-scroll" tabindex="0" aria-label="Tabela de registros; role horizontalmente para ver todas as colunas"><table><thead><tr><th scope="col">Data</th><th scope="col">Antecedente</th><th scope="col">Comportamento</th><th scope="col">Consequência</th><th scope="col" class="numeric">Frequência</th><th scope="col" class="numeric">Duração</th></tr></thead><tbody id="records-body"></tbody></table></div><div class="table-footer"><span id="table-count"></span><span>Dados fictícios</span></div></section>
+      <footer class="page-footer"><span>ComportaData · Projeto acadêmico</span><span>Registro ABC e análise descritiva</span></footer>
+    </main>
+  </div>
+  <dialog id="record-dialog" aria-labelledby="dialog-title"><form id="record-form"><div class="dialog-heading"><div><p class="eyebrow">REGISTRO ABC</p><h2 id="dialog-title">Nova observação</h2></div><button class="close" type="button" id="close-dialog" aria-label="Fechar formulário">×</button></div><p class="dialog-intro">Descreva uma situação fictícia e o que foi observado.</p><label>Data do registro<input name="data" type="date" required></label><div class="field"><label for="antecedente"><span class="field-letter">A</span> Antecedente</label><textarea id="antecedente" name="antecedente" rows="2" maxlength="500" required placeholder="Ex.: apresentação de uma tarefa de desenho"></textarea></div><div class="field"><label for="comportamento"><span class="field-letter">B</span> Comportamento</label><textarea id="comportamento" name="comportamento" rows="2" maxlength="500" required placeholder="Ex.: pedir ajuda verbalmente"></textarea></div><div class="field"><label for="consequencia"><span class="field-letter">C</span> Consequência</label><textarea id="consequencia" name="consequencia" rows="2" maxlength="500" required placeholder="Ex.: adulto demonstra a primeira etapa"></textarea></div><div class="form-numbers"><label>Frequência<input type="number" name="frequencia" min="0" max="1000000" step="1" required placeholder="Ex.: 2"><small>Número de ocorrências</small></label><label>Duração (minutos)<input name="duracao" inputmode="decimal" required placeholder="Ex.: 1,5"><small>Use ponto ou vírgula</small></label></div><p id="form-error" class="form-error" role="alert"></p><div class="dialog-footer"><button type="button" class="secondary" id="cancel-dialog">Cancelar</button><button type="submit" class="primary">Salvar registro</button></div></form></dialog>
+  <div class="toast" id="toast" role="status" hidden></div>
+  <noscript>Ative o JavaScript do navegador para usar esta demonstração.</noscript>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
