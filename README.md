@@ -8,13 +8,13 @@ Desenvolvido por **Fernanda do Vale**, o projeto conecta conhecimentos de Psicol
 
 O programa funciona localmente pelo terminal e salva registros em um arquivo CSV. Cada registro reúne data, antecedente, comportamento, consequência, frequência e duração em minutos.
 
-**Status:** protótipo inicial. Este repositório contém a versão original do código, com limitações documentadas abaixo.
+**Status:** protótipo acadêmico em desenvolvimento, com leitura e gravação de registros CSV.
 
 ## Funcionalidades da versão atual
 
 - Cadastrar registros ABC.
-- Consultar os registros cadastrados durante a execução atual.
-- Exportar os registros da execução para `registros.csv`.
+- Consultar os registros carregados do CSV e os novos cadastros.
+- Salvar os registros em `registros.csv`, preservando os dados carregados ao iniciar.
 - Exibir quantidade de registros, frequência total e duração média por registro.
 - Identificar os comportamentos, antecedentes e consequências que aparecem em mais registros.
 
@@ -72,30 +72,56 @@ Digite os comandos de execução no terminal, antes de abrir o programa. No menu
 
 Use ponto para separar as casas decimais da duração. O arquivo `registros.csv` é criado na mesma pasta de `main.py` após o primeiro cadastro.
 
+## Leitura e preservação do CSV
+
+Ao iniciar, o programa procura `registros.csv` na mesma pasta de `main.py`. Se o arquivo existir, carrega os registros e converte frequência e duração para números. Se não existir, inicia sem registros e cria o CSV após o primeiro cadastro.
+
+Novos registros são salvos junto com os anteriores. A opção de análise sem dados exibe uma mensagem e retorna ao menu.
+
+Se o CSV tiver cabeçalho incorreto, campos ausentes, números inválidos, negativos ou duração não finita, o programa encerra sem alterar o arquivo. Confira o conteúdo antes de tentar novamente. Aceita CSV em UTF-8 com ou sem BOM.
+
+## Testar com exemplos fictícios
+
+A pasta `exemplos` contém `registros_exemplo_ficticios.csv`, com 20 registros criados apenas para demonstração.
+
+1. Feche o programa. Se já houver um `registros.csv`, faça uma cópia de segurança antes de substituí-lo.
+2. Copie o arquivo de exemplos para a pasta de `main.py` e renomeie a cópia para `registros.csv`.
+3. Execute o programa e escolha a opção 2 ou 3.
+
+Com os exemplos sem alterações, a análise apresenta 20 registros, frequência total de 40 e duração média de 2.85 minutos por registro. Os exemplos permanecem separados do CSV de uso.
+
+## Testes automatizados
+
+Na pasta do projeto, execute:
+
+```bash
+python -m unittest discover -s tests -v
+```
+
+Os testes verificam a leitura, a preservação dos registros ao reabrir, a análise vazia, o primeiro cadastro e a proteção contra CSV inválido. Usam pastas temporárias e dados fictícios.
+
 ## Limitações conhecidas
 
-- Os registros começam vazios a cada execução: o CSV existente não é carregado.
-- Ao cadastrar um registro em uma nova execução, o CSV anterior é sobrescrito com os registros da execução atual.
-- Selecionar a análise sem registros causa um erro de divisão por zero.
 - Entradas não numéricas nos campos numéricos podem encerrar o programa.
 - Não há validação de datas, valores negativos ou campos de texto vazios.
 
-Essas limitações precisam ser resolvidas antes de usar o programa para armazenar dados que devam ser preservados.
+A validação dos dados digitados no terminal é uma melhoria pendente. Mantenha cópias de segurança do CSV.
 
 ## Estrutura do repositório
 
 | Arquivo | Finalidade |
 |---|---|
-| `main.py` | Código original do programa |
+| `main.py` | Programa com leitura, cadastro, consulta e análise |
 | `README.md` | Apresentação e instruções |
 | `.gitignore` | Exclui dados locais e arquivos temporários do Git |
+| `tests/test_main.py` | Testes automatizados de regressão |
+| `exemplos/registros_exemplo_ficticios.csv` | Dados fictícios para demonstração |
 
 O CSV gerado durante o uso não é incluído no repositório. Os exemplos apresentados são fictícios.
 
 ## Próximas melhorias
 
-- Recuperar registros do CSV ao iniciar.
-- Tratar entradas inválidas e análises sem dados.
+- Tratar entradas inválidas no terminal.
 - Validar os campos de cadastro.
 - Ampliar as análises e a apresentação dos resultados.
 
@@ -104,3 +130,4 @@ Esses itens são propostas para futuras versões, ainda não implementadas.
 ## Autoria
 
 **Fernanda do Vale** — [GitHub](https://github.com/fdvale)
+
